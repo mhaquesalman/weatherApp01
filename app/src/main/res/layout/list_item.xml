@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_item_bg"
+    android:padding="10dp">
+
+<RelativeLayout
+    android:id="@+id/text1"
+    android:layout_weight="0.8"
+    android:gravity="left"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Today"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:id="@+id/day"/>
+    <TextView
+        android:id="@+id/temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min: 90"
+        android:textSize="20sp"
+        android:textColor="#000"
+        android:layout_below="@id/day"/>
+</RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_cloud"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@id/text1">
+    </ImageView>
+
+    <RelativeLayout
+        android:id="@+id/text2"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:layout_toRightOf="@id/image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="July 21, 2019"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:id="@+id/date"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Max: 18C"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_below="@id/date"/>
+    </RelativeLayout>
+</LinearLayout>
