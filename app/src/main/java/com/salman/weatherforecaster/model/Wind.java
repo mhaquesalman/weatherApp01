@@ -2,7 +2,7 @@ package com.salman.weatherforecaster.model;
 
 public class Wind {
     public double speed;
-    public int deg;
+    public float deg;
 
     public Wind() {
     }
@@ -15,11 +15,11 @@ public class Wind {
         this.speed = speed;
     }
 
-    public int getDeg() {
+    public float getDeg() {
         return deg;
     }
 
-    public void setDeg(int deg) {
+    public void setDeg(float deg) {
         this.deg = deg;
     }
 }

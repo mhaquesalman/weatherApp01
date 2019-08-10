@@ -6,17 +6,5 @@
         android:icon="@drawable/ic_search"
         android:title="search"
         app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menuItem_home"
-        android:icon="@drawable/ic_home"
-        android:title="home"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menuItem_units"
-        android:title="Units"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/menuItem_location"
-        android:title="Location"
-        app:showAsAction="ifRoom" />
+
 </menu>

@@ -1,5 +1,6 @@
 package com.salman.weatherforecaster.retrofit;
 
+import com.salman.weatherforecaster.model.WeatherForecastResult;
 import com.salman.weatherforecaster.model.WeatherResult;
 
 import io.reactivex.Observable;
@@ -17,4 +18,16 @@ public interface WeatherService {
 
     @GET
     Call<WeatherResult> getCurrentWeatherResponse(@Url String url);
+
+    @GET("forecast/daily")
+    Observable<WeatherForecastResult> getForeCastWeather(@Query("lat") String lat,
+                                                         @Query("lon") String lon,
+                                                         @Query("cnt") String cnt,
+                                                         @Query("appid") String appid,
+                                                         @Query("units") String unit);
+
+    @GET("weather")
+    Observable<WeatherResult> getWeatherByCity(@Query("q") String city,
+                                               @Query("appid") String appid,
+                                               @Query("units") String unit);
 }

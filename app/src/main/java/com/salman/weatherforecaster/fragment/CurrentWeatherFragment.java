@@ -2,7 +2,9 @@ package com.salman.weatherforecaster.fragment;
 
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -62,6 +64,7 @@ public class CurrentWeatherFragment extends Fragment {
     ProgressBar loading;
     CompositeDisposable compositeDisposable;
     WeatherService weatherService;
+    ProgressDialog progressDialog;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
@@ -71,6 +74,13 @@ public class CurrentWeatherFragment extends Fragment {
     public static double lon;
     public static String units = "metric";
 
+    static CurrentWeatherFragment instance;
+    public static CurrentWeatherFragment getInstance() {
+        if (instance == null) {
+            instance = new CurrentWeatherFragment();
+        }
+        return instance;
+    }
 
     public CurrentWeatherFragment() {
         compositeDisposable = new CompositeDisposable();
@@ -80,8 +90,7 @@ public class CurrentWeatherFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View itemView = inflater.inflate(R.layout.fragment_current_weather, container, false);
         imageView = itemView.findViewById(R.id.image);
@@ -98,8 +107,11 @@ public class CurrentWeatherFragment extends Fragment {
         main = itemView.findViewById(R.id.main);
 
         weatherService = RetrofitClient.getRetrofit().create(WeatherService.class);
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading...");
 
-        Dexter.withActivity(getActivity())
+    /*    Dexter.withActivity(getActivity())
                 .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new MultiplePermissionsListener() {
@@ -128,12 +140,12 @@ public class CurrentWeatherFragment extends Fragment {
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
                         Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
                     }
-                }).check();
-
+                }).check(); */
+        getWeatherInformation();
         return itemView;
     }
 
-    public void buildLocationCallback() {
+/*    public void buildLocationCallback() {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -142,17 +154,18 @@ public class CurrentWeatherFragment extends Fragment {
                 location = locationResult.getLastLocation();
                 lat = Double.parseDouble(String.format("%.2f", location.getLatitude()));
                 lon = Double.parseDouble(String.format("%.2f", location.getLongitude()));
+                Common.current_location = locationResult.getLastLocation();
                 getWeatherInformation();
 
                 //lat = location.getLatitude();
                 //lon = location.getLongitude();
 
-/*              Bundle bundle = new Bundle();
+*//*              Bundle bundle = new Bundle();
                 bundle.putString("lat", lat);
                 bundle.putString("lon", lon);
                 // set Fragmentclass Arguments
                 CurrentWeatherFragment fragment = new CurrentWeatherFragment();
-                fragment.setArguments(bundle);*/
+                fragment.setArguments(bundle);*//*
 
                 //Common.current_location = locationResult.getLastLocation();
                 //CurrentWeatherFragment.location = locationResult.getLastLocation();
@@ -170,14 +183,26 @@ public class CurrentWeatherFragment extends Fragment {
         locationRequest.setInterval(5000);
         locationRequest.setFastestInterval(3000);
         locationRequest.setSmallestDisplacement(10.0f);
+    } */
+
+
+    public void changeUnits(String selectedUnits) {
+        if (selectedUnits.equals("°С")) {
+            units = "metric";
+        } else if (selectedUnits.equals("°F")) {
+            units = "imperial";
+        }
     }
 
+    // 23.74, 90.37
     public void getWeatherInformation() {
-        String urlString = String.format("weather?lat=%s&lon=%s&appid=%s&units=%s",String.valueOf(lat),String.valueOf(lon),Common.APP_ID,units);
+        //progressDialog.show();
+        String urlString = String.format("weather?lat=%s&lon=%s&appid=%s&units=%s",String.valueOf(Common.current_location.getLatitude()),String.valueOf(Common.current_location.getLongitude()),Common.APP_ID,units);
         Call<WeatherResult> call = weatherService.getCurrentWeatherResponse(urlString);
         call.enqueue(new Callback<WeatherResult>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResult> call, @NonNull Response<WeatherResult> response) {
+                progressDialog.dismiss();
                 Log.d(TAG, "1.onResponse: " +response.code());
                 Log.d(TAG, "2.onResponse: "+response.body());
                 if (response.code() == 200) {
@@ -207,7 +232,6 @@ public class CurrentWeatherFragment extends Fragment {
                 Log.e(TAG, "onFailure: " + t.getMessage() );
             }
         });
-
     }
 
 /*    @Override
@@ -215,4 +239,7 @@ public class CurrentWeatherFragment extends Fragment {
         this.mContex = context;
         super.onAttach(context);
     }*/
+
+
 }
+

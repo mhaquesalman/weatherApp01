@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:entries="@array/weather_types"
+        android:entryValues="@array/weather_types"
+        android:key="settings_typesOfWeather"
+        android:title="Choose Weather Type"
+        android:summary="@string/menu_desc"
+        android:persistent="true"
+        android:defaultValue="°С">
+    </ListPreference>
+
+</PreferenceScreen>

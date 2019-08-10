@@ -165,7 +165,7 @@
             android:id="@+id/sunrise"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="6:45 AM"
+            android:text="6:00 AM"
             android:textColor="#000"
             android:layout_gravity="center"
             android:textSize="25sp" />
@@ -180,7 +180,7 @@
             android:id="@+id/sunset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5:25 PM"
+            android:text="7:00 PM"
             android:textColor="#000"
             android:layout_gravity="center"
             android:textSize="25sp" />
