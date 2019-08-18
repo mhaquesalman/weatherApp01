@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
             isSettingsChanged = true;
             String selectedUnits= sharedPreferences.getString(MainActivity.SETTINGS, null);
             Log.e(TAG, "onSharedPreferenceChanged: "+ selectedUnits);
+
             if (key.equals(SETTINGS)) {
                 CurrentWeatherFragment.getInstance().changeUnits(selectedUnits);
             }
@@ -246,16 +247,6 @@ public class MainActivity extends AppCompatActivity {
                 Common.current_location = locationResult.getLastLocation();
                 setupViewPager(viewPager);
                 tabLayout.setupWithViewPager(viewPager);
-
-                //lat = location.getLatitude();
-                //lon = location.getLongitude();
-
-                /* Bundle bundle = new Bundle();
-                bundle.putString("lat", lat);
-                bundle.putString("lon", lon);
-                // set Fragmentclass Arguments
-                CurrentWeatherFragment fragment = new CurrentWeatherFragment();
-                fragment.setArguments(bundle); */
 
                 Log.d(TAG, "Location: " + lat + " / " + lon);
             }

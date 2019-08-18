@@ -1,16 +1,10 @@
 package com.salman.weatherforecaster.fragment;
 
-
-import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,39 +13,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.salman.weatherforecaster.MainActivity;
 import com.salman.weatherforecaster.R;
 import com.salman.weatherforecaster.common.Common;
 import com.salman.weatherforecaster.model.WeatherResult;
 import com.salman.weatherforecaster.retrofit.RetrofitClient;
 import com.salman.weatherforecaster.retrofit.WeatherService;
 import com.squareup.picasso.Picasso;
-
-import java.text.DecimalFormat;
-import java.util.List;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-import static android.support.constraint.Constraints.TAG;
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,18 +39,10 @@ public class CurrentWeatherFragment extends Fragment {
     Context mContex;
     ImageView imageView;
     TextView temparature, date, day, city, min, max, sunrise, sunset, humidity, pressure, main;
-    ProgressBar loading;
     CompositeDisposable compositeDisposable;
     WeatherService weatherService;
-    ProgressDialog progressDialog;
-
-    private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationCallback locationCallback;
-    private LocationRequest locationRequest;
-    public static Location location;
-    public static double lat;
-    public static double lon;
-    public static String units = "metric";
+    public static String units = "";
+    public static String selectUnit = "";
 
     static CurrentWeatherFragment instance;
     public static CurrentWeatherFragment getInstance() {
@@ -83,9 +53,9 @@ public class CurrentWeatherFragment extends Fragment {
     }
 
     public CurrentWeatherFragment() {
-        compositeDisposable = new CompositeDisposable();
-      //  Retrofit retrofit = RetrofitClient.getRetrofit();
-      //  weatherService = retrofit.create(WeatherService.class);
+         compositeDisposable = new CompositeDisposable();
+         Retrofit retrofit = RetrofitClient.getRetrofit();
+         weatherService = retrofit.create(WeatherService.class);
     }
 
 
@@ -106,92 +76,29 @@ public class CurrentWeatherFragment extends Fragment {
         pressure = itemView.findViewById(R.id.pressure);
         main = itemView.findViewById(R.id.main);
 
-        weatherService = RetrofitClient.getRetrofit().create(WeatherService.class);
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading...");
+        //weatherService = RetrofitClient.getRetrofit().create(WeatherService.class);
+        SharedPreferences preferences = getContext().getSharedPreferences("PREFS", Context.MODE_PRIVATE);
+        units = preferences.getString("units", "metric");
+        selectUnit = preferences.getString("selectUnit", "°С");
 
-    /*    Dexter.withActivity(getActivity())
-                .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        if (report.areAllPermissionsGranted()) {
-                            buildLocationRequest();
-                            buildLocationCallback();
-
-                            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                                // TODO: Consider calling
-                                //    ActivityCompat#requestPermissions
-                                // here to request the missing permissions, and then overriding
-                                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                //                                          int[] grantResults)
-                                // to handle the case where the user grants the permission. See the documentation
-                                // for ActivityCompat#requestPermissions for more details.
-                                return;
-                            }
-                            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-                            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        Toast.makeText(getActivity(), "Permission Denied", Toast.LENGTH_SHORT).show();
-                    }
-                }).check(); */
+        Log.d(TAG, "onCreateView: " + units + selectUnit + Common.current_location.toString());
         getWeatherInformation();
         return itemView;
     }
 
-/*    public void buildLocationCallback() {
-        locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                //DecimalFormat df = new DecimalFormat("#.00");
-                location = locationResult.getLastLocation();
-                lat = Double.parseDouble(String.format("%.2f", location.getLatitude()));
-                lon = Double.parseDouble(String.format("%.2f", location.getLongitude()));
-                Common.current_location = locationResult.getLastLocation();
-                getWeatherInformation();
-
-                //lat = location.getLatitude();
-                //lon = location.getLongitude();
-
-*//*              Bundle bundle = new Bundle();
-                bundle.putString("lat", lat);
-                bundle.putString("lon", lon);
-                // set Fragmentclass Arguments
-                CurrentWeatherFragment fragment = new CurrentWeatherFragment();
-                fragment.setArguments(bundle);*//*
-
-                //Common.current_location = locationResult.getLastLocation();
-                //CurrentWeatherFragment.location = locationResult.getLastLocation();
-                //Log.d(TAG, "Common: " + Common.current_location);
-                //Log.d(TAG, "CurrentWeatherFragment: " + CurrentWeatherFragment.location);
-                //Log.d(TAG, "onLocationResult: " + Common.current_location.getLatitude() + " / " + Common.current_location.getLongitude());
-                Log.d(TAG, "Location: " + lat + " / " + lon);
-            }
-        };
-    }
-
-    public void buildLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(3000);
-        locationRequest.setSmallestDisplacement(10.0f);
-    } */
-
-
+    //change units from prefrences
     public void changeUnits(String selectedUnits) {
         if (selectedUnits.equals("°С")) {
             units = "metric";
+            selectUnit = selectedUnits;
         } else if (selectedUnits.equals("°F")) {
             units = "imperial";
+            selectUnit = selectedUnits;
         }
+        SharedPreferences.Editor editor = getContext().getSharedPreferences("PREFS", MODE_PRIVATE).edit();
+        editor.putString("units", units);
+        editor.putString("selectUnit", selectUnit);
+        editor.apply();
     }
 
     // 23.74, 90.37
@@ -202,7 +109,6 @@ public class CurrentWeatherFragment extends Fragment {
         call.enqueue(new Callback<WeatherResult>() {
             @Override
             public void onResponse(@NonNull Call<WeatherResult> call, @NonNull Response<WeatherResult> response) {
-                progressDialog.dismiss();
                 Log.d(TAG, "1.onResponse: " +response.code());
                 Log.d(TAG, "2.onResponse: "+response.body());
                 if (response.code() == 200) {
@@ -213,7 +119,7 @@ public class CurrentWeatherFragment extends Fragment {
                             .append(".png").toString()).into(imageView);
                     temparature.setText(new StringBuilder(
                             String.valueOf(weatherResult.getMain().getTemp()))
-                            .append("°С").toString());
+                            .append(selectUnit).toString());
                     city.setText(weatherResult.getName());
                     Log.d(TAG, "onResponse: "+weatherResult.getName());
                     date.setText(Common.convertUnixToDate(weatherResult.getDt()));
@@ -222,8 +128,8 @@ public class CurrentWeatherFragment extends Fragment {
                     humidity.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getHumidity())).append(" %").toString());
                     sunrise.setText(Common.convertUnixToHour(weatherResult.getSys().getSunrise()));
                     sunset.setText(Common.convertUnixToHour(weatherResult.getSys().getSunset()));
-                    min.setText(weatherResult.getMain().getTemp_min() + " °С");
-                    max.setText(weatherResult.getMain().getTemp_max() + " °С");
+                    min.setText(weatherResult.getMain().getTemp_min() + " " + selectUnit);
+                    max.setText(weatherResult.getMain().getTemp_max() + " " + selectUnit);
                     main.setText(weatherResult.getWeather().get(0).getMain());
                 }
             }

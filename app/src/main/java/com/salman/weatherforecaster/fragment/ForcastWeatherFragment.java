@@ -70,7 +70,6 @@ public class ForcastWeatherFragment extends Fragment {
         compositeDisposable.add(weatherService.getForeCastWeather(
                 String.valueOf(Common.current_location.getLatitude()),
                 String.valueOf(Common.current_location.getLongitude()),
-                "7",
                 Common.APP_ID,
                 "metric")
                 .subscribeOn(Schedulers.io())

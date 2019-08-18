@@ -41,8 +41,8 @@ public class WeatherForcastAdapter extends RecyclerView.Adapter<WeatherForcastAd
 
         myViewHolder.date.setText(new StringBuilder(Common.convertUnixToDate(weatherForecastResult.list.get(position).dt)));
         myViewHolder.day.setText(new StringBuilder(Common.convertUnixToDay(weatherForecastResult.list.get(position).dt)));
-        myViewHolder.minTemp.setText(("Min: " + weatherForecastResult.list.get(position).temp.getMin()) + " °С");
-        myViewHolder.maxTemp.setText(("Max: " + weatherForecastResult.list.get(position).temp.getMax()) + " °С");
+        myViewHolder.minTemp.setText(("Min: " + weatherForecastResult.list.get(position).main.getTemp_min()) + " °С");
+        myViewHolder.maxTemp.setText(("Max: " + weatherForecastResult.list.get(position).main.getTemp_min()) + " °С");
 
 
     }

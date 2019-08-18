@@ -4,15 +4,13 @@ import java.util.List;
 
 public class MyList {
     public int dt;
-    public Temp temp;
-    public double pressure;
-    public int humidity;
+    public Main main;
     public List<Weather> weather;
-    public double speed;
-    public int deg;
-    public int clouds;
-    public double rain;
-    public double snow;
+    public Clouds clouds;
+    public Wind wind;
+    public Rain rain;
+    public Sys sys;
+    public String dt_txt;
 
     public int getDt() {
         return dt;
@@ -22,28 +20,12 @@ public class MyList {
         this.dt = dt;
     }
 
-    public Temp getTemp() {
-        return temp;
+    public Main getMain() {
+        return main;
     }
 
-    public void setTemp(Temp temp) {
-        this.temp = temp;
-    }
-
-    public double getPressure() {
-        return pressure;
-    }
-
-    public void setPressure(double pressure) {
-        this.pressure = pressure;
-    }
-
-    public int getHumidity() {
-        return humidity;
-    }
-
-    public void setHumidity(int humidity) {
-        this.humidity = humidity;
+    public void setMain(Main main) {
+        this.main = main;
     }
 
     public List<Weather> getWeather() {
@@ -54,43 +36,43 @@ public class MyList {
         this.weather = weather;
     }
 
-    public double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
-    public int getDeg() {
-        return deg;
-    }
-
-    public void setDeg(int deg) {
-        this.deg = deg;
-    }
-
-    public int getClouds() {
+    public Clouds getClouds() {
         return clouds;
     }
 
-    public void setClouds(int clouds) {
+    public void setClouds(Clouds clouds) {
         this.clouds = clouds;
     }
 
-    public double getRain() {
+    public Wind getWind() {
+        return wind;
+    }
+
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
+
+    public Rain getRain() {
         return rain;
     }
 
-    public void setRain(double rain) {
+    public void setRain(Rain rain) {
         this.rain = rain;
     }
 
-    public double getSnow() {
-        return snow;
+    public Sys getSys() {
+        return sys;
     }
 
-    public void setSnow(double snow) {
-        this.snow = snow;
+    public void setSys(Sys sys) {
+        this.sys = sys;
+    }
+
+    public String getDt_txt() {
+        return dt_txt;
+    }
+
+    public void setDt_txt(String dt_txt) {
+        this.dt_txt = dt_txt;
     }
 }

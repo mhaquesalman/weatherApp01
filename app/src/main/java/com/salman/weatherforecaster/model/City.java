@@ -1,13 +1,18 @@
 package com.salman.weatherforecaster.model;
 
 public class City {
+    public int id;
     public String name;
-    public double lat;
-    public double lon;
+    public Coord coord;
     public String country;
-    public String iso2;
-    public String type;
-    public int population;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -17,20 +22,12 @@ public class City {
         this.name = name;
     }
 
-    public double getLat() {
-        return lat;
+    public Coord getCoord() {
+        return coord;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public double getLon() {
-        return lon;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
+    public void setCoord(Coord coord) {
+        this.coord = coord;
     }
 
     public String getCountry() {
@@ -39,29 +36,5 @@ public class City {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getIso2() {
-        return iso2;
-    }
-
-    public void setIso2(String iso2) {
-        this.iso2 = iso2;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public int getPopulation() {
-        return population;
-    }
-
-    public void setPopulation(int population) {
-        this.population = population;
     }
 }

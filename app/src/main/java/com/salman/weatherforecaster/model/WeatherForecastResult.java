@@ -4,10 +4,10 @@ import java.util.List;
 
 public class WeatherForecastResult {
     public String cod;
-    public int message;
-    public City city;
+    public double message;
     public int cnt;
     public List<MyList> list;
+    public City city;
 
     public String getCod() {
         return cod;
@@ -17,20 +17,12 @@ public class WeatherForecastResult {
         this.cod = cod;
     }
 
-    public int getMessage() {
+    public double getMessage() {
         return message;
     }
 
-    public void setMessage(int message) {
+    public void setMessage(double message) {
         this.message = message;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
     }
 
     public int getCnt() {
@@ -47,5 +39,13 @@ public class WeatherForecastResult {
 
     public void setList(List<MyList> list) {
         this.list = list;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }
